@@ -8,7 +8,7 @@ The post for v1.1 should mention v2 by name. "I have a roadmap" is a maturity si
 
 ## v1.1 (current scope)
 
-Built first. See `02_prd_v11.md` for the full spec.
+Built first. See `PRD.md` for the full spec.
 
 What you have when v1.1 is done:
 - Daily-refreshable pipeline (run manually)

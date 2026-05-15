@@ -24,4 +24,4 @@ Start with the **Status** line. If it says "Superseded," read the original to un
 
 ## How to add a new ADR
 
-Copy `TEMPLATE.md`, increment the number, fill in the sections, and add a row to the index above.
+Copy `template.md`, increment the number, fill in the sections, and add a row to the index above.
