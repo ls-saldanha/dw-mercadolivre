@@ -22,6 +22,7 @@ def check_env() -> None:
     required = [
         "SUPABASE_URL",
         "SUPABASE_SERVICE_ROLE_KEY",
+        "SUPABASE_DB_PASSWORD",
         "AWS_ACCESS_KEY_ID",
         "AWS_SECRET_ACCESS_KEY",
         "AWS_DEFAULT_REGION",
@@ -43,7 +44,7 @@ def test_s3() -> None:
     bucket = os.getenv("S3_BUCKET")
     key = "smoke_test/smoke.parquet"
 
-    df = pd.DataFrame([{"id": 1, "message": "smoke_ok", "ts": pd.Timestamp.utcnow()}])
+    df = pd.DataFrame([{"id": 1, "message": "smoke_ok", "ts": pd.Timestamp.now("UTC")}])
 
     buf = io.BytesIO()
     df.to_parquet(buf, index=False)
@@ -57,18 +58,25 @@ def test_s3() -> None:
     print(f"✓ S3 read: {len(result)} row(s) returned")
 
 
-def _supabase_conn_str() -> str:
+def _supabase_conn_params() -> dict:
     # SUPABASE_URL looks like: https://<project-ref>.supabase.co
     # Postgres host is: db.<project-ref>.supabase.co
+    # Password is the DB password from Supabase Settings → Database (NOT the service role key)
     url = os.getenv("SUPABASE_URL", "")
     project_ref = url.replace("https://", "").replace(".supabase.co", "")
-    host = f"db.{project_ref}.supabase.co"
-    password = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
-    return f"postgresql://postgres:{password}@{host}:5432/postgres"
+    return {
+        "host": f"db.{project_ref}.supabase.co",
+        "port": 5432,
+        "dbname": "postgres",
+        "user": "postgres",
+        "password": os.getenv("SUPABASE_DB_PASSWORD", ""),
+        "sslmode": "require",
+        "connect_timeout": 10,
+    }
 
 
 def test_postgres() -> None:
-    conn = psycopg2.connect(_supabase_conn_str())
+    conn = psycopg2.connect(**_supabase_conn_params())
     cur = conn.cursor()
 
     cur.execute("""
