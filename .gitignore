@@ -1,0 +1,22 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Secrets
+.env
+
+# dbt
+dbt/target/
+dbt/logs/
+dbt/.user.yml
+
+# Misc
+.DS_Store
+logs/
