@@ -33,12 +33,37 @@
 
 ---
 
-## Status: in progress
+## [2026-05-15] Checkpoint: Fetcher verified — all acceptance criteria met
 
-Currently working on: running the fetcher for the first time against the live Bacen endpoint.
+*Commit `feat: Milestone 3 — Bacen PTAX fetcher`*
 
-Outstanding for M3 acceptance:
-- [ ] PTAX fetch succeeds for today's date
-- [ ] Weekend/holiday case handled (lookback finds most recent business-day rate)
-- [ ] File lands in S3 at `bronze/bacen_ptax/ingestion_date=YYYY-MM-DD/ptax.parquet`
-- [ ] Re-running same day is idempotent (overwrites, no duplicate rows)
+**What we built:** Ran the fetcher live against the Bacen endpoint. Confirmed S3 write, idempotency, and weekend lookback — all four acceptance criteria green.
+
+**Files touched:** No new files — same commit as above.
+
+**New concepts introduced:** None — same code as the prior checkpoint.
+
+**Patterns reused:** Idempotent S3 overwrite — same as synthetic generator.
+
+**What broke and how we fixed it:**
+- No breakage on first run. `bid=5.0648 ask=5.0654` written to S3 on first attempt.
+- Weekend test: passed `reference_date=date(2026, 5, 10)` (Sunday) → correctly resolved to `effective=2026-05-08` (prior Friday). No code changes needed.
+
+**Decisions logged:** None new.
+
+**Next step:** Move to M4 — Bronze loader (S3 Parquets → Postgres `bronze` schema, idempotent).
+
+---
+
+## Milestone Complete
+
+M3 closed 2026-05-15. Acceptance criteria met:
+
+- [x] Today's FX rate in S3 (`bid=5.0648`, `ask=5.0654`)
+- [x] Weekend/holiday handled — Sunday 2026-05-10 resolved to Friday 2026-05-08
+- [x] File at `bronze/bacen_ptax/ingestion_date=2026-05-15/ptax.parquet`
+- [x] Re-running same day overwrites — identical output, no duplicates
+
+The lookback logic (`range(LOOKBACK_DAYS)` with `None` sentinel) is a pattern that will recur anywhere we need "most recent available value" — forward-filling in dbt Silver will use the same idea in SQL.
+
+Next: [m4-bronze-loader.md](m4-bronze-loader.md)
