@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: mart_sales
+    description: >
+      Daily revenue by product category. One row per (sale_date, product_category).
+      Revenue in BRL and USD (converted via PTAX bid rate). Includes 7-day rolling revenue.
+    columns:
+      - name: sale_date
+        tests:
+          - not_null
+      - name: product_category
+        tests:
+          - not_null
+      - name: revenue_brl
+        tests:
+          - not_null
+      - name: order_count
+        tests:
+          - not_null
