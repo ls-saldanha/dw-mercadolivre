@@ -66,7 +66,7 @@ fig1.update_layout(
     margin=dict(l=0, r=0, t=30, b=0),
     height=350,
 )
-st.plotly_chart(fig1, use_container_width=True)
+st.plotly_chart(fig1, width='stretch')
 
 # ── Chart 2: Revenue by category (grouped bar) ───────────────────────────────
 st.subheader("Revenue by Category")
@@ -85,7 +85,7 @@ fig2.update_layout(
     margin=dict(l=0, r=0, t=10, b=0),
     height=350,
 )
-st.plotly_chart(fig2, use_container_width=True)
+st.plotly_chart(fig2, width='stretch')
 
 # ── Chart 3: 7-day rolling revenue by category ───────────────────────────────
 st.subheader("7-Day Rolling Revenue by Category")
@@ -106,7 +106,7 @@ fig3.update_layout(
     margin=dict(l=0, r=0, t=30, b=0),
     height=350,
 )
-st.plotly_chart(fig3, use_container_width=True)
+st.plotly_chart(fig3, width='stretch')
 
 # ── Summary metrics ──────────────────────────────────────────────────────────
 st.divider()
