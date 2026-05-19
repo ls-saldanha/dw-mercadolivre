@@ -1,5 +1,7 @@
 # dw-mercadolivre
 
+**[dbt docs & lineage graph →](https://ls-saldanha.github.io/dw-mercadolivre/)**
+
 A portfolio-grade Data Warehouse that ingests synthetic e-commerce sales and live USD/BRL exchange rates from Brazil's Central Bank, transforms them through three data layers, and surfaces the results in an interactive dashboard — all triggered by a single command.
 
 ```
