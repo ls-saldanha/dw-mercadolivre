@@ -23,3 +23,6 @@ logs/
 
 # Personal learning notes
 docs/walkthroughs/
+
+# Claude Code working agreement (local only)
+CLAUDE.md
