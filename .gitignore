@@ -20,3 +20,6 @@ dbt/.user.yml
 # Misc
 .DS_Store
 logs/
+
+# Personal learning notes
+docs/walkthroughs/
