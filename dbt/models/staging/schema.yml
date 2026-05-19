@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: stg_bacen_ptax
+    description: Typed PTAX FX rates from Bronze. One row per cotacao_date (last business day rate).
+    columns:
+      - name: cotacao_date
+        tests:
+          - not_null
+          - unique
+      - name: bid_rate
+        tests:
+          - not_null
+      - name: ask_rate
+        tests:
+          - not_null
+
+  - name: stg_internal_products
+    description: Cleaned and deduplicated products from Bronze. One row per product_id, with price_tier label.
+    columns:
+      - name: product_id
+        tests:
+          - not_null
+          - unique
+      - name: category
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['electronics', 'apparel', 'home', 'health', 'books']
+      - name: price_tier
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['cheap', 'mid', 'premium']
+      - name: unit_price_brl
+        tests:
+          - not_null
+
+  - name: stg_internal_customers
+    description: Cleaned and deduplicated customers from Bronze. One row per customer_id.
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique
+      - name: name
+        tests:
+          - not_null
+      - name: email
+        tests:
+          - not_null
+
+  - name: stg_internal_sales
+    description: Cleaned and deduplicated sales from Bronze. One row per order_id.
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_internal_customers')
+                field: customer_id
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_internal_products')
+                field: product_id
+      - name: quantity
+        tests:
+          - not_null
+      - name: total_amount
+        tests:
+          - not_null

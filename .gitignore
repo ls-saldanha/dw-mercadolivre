@@ -16,6 +16,7 @@ wheels/
 dbt/target/
 dbt/logs/
 dbt/.user.yml
+dbt/profiles.yml
 
 # Misc
 .DS_Store

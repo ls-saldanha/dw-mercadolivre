@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: bronze
+    schema: bronze
+    description: Raw data landed from S3 by the Bronze loader.
+    tables:
+      - name: internal_sales
+      - name: internal_customers
+      - name: internal_products
+      - name: bacen_ptax
