@@ -28,22 +28,27 @@ jobs:
 
       - name: Create dbt profiles.yml
         env:
-          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          DBT_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
         run: |
-          cat > dbt/profiles.yml << EOF
-          dw_mercadolivre:
-            target: dev
-            outputs:
-              dev:
-                type: postgres
-                host: db.lmjfqxjrlmlrphgdictw.supabase.co
-                port: 5432
-                database: postgres
-                user: postgres
-                password: "${SUPABASE_DB_PASSWORD}"
-                schema: public
-                threads: 1
-          EOF
+          python3 -c "
+          import os
+          pw = os.environ['DBT_PASSWORD']
+          lines = [
+              'dw_mercadolivre:',
+              '  target: dev',
+              '  outputs:',
+              '    dev:',
+              '      type: postgres',
+              '      host: db.lmjfqxjrlmlrphgdictw.supabase.co',
+              '      port: 5432',
+              '      database: postgres',
+              '      user: postgres',
+              f'      password: \"{pw}\"',
+              '      schema: public',
+              '      threads: 1',
+          ]
+          open('dbt/profiles.yml', 'w').write('\n'.join(lines) + '\n')
+          "
 
       - name: Generate dbt docs
         run: uv run dbt docs generate --profiles-dir dbt --project-dir dbt
